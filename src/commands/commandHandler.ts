@@ -1,42 +1,76 @@
-import * as vscode from 'vscode';
-import { CommandConfig } from '../types/command-config';
-import { TerminalManager } from '../utils/terminalManager';
-export function handleCommandExecution(commandConfig: CommandConfig, context: vscode.ExtensionContext) {
-    if (commandConfig.isBuiltIn) {
-        // Process and execute built-in VS Code command with dynamic arguments
-        const processedArgs = commandConfig.args ? processArgs(commandConfig.args, context) : [];
-        vscode.commands.executeCommand(commandConfig.text, ...processedArgs);
-    } else {
-        // Execute custom command in a terminal, with an option to clear the terminal before execution
-        const clearBeforeExecute = true;
-        TerminalManager.openTerminal(commandConfig.displayName, commandConfig.text, clearBeforeExecute);
+import * as vscode from "vscode";
+import { CommandConfig } from "../types/command-config";
+import { TerminalManager } from "../utils/terminalManager";
+
+export function handleCommandExecution(
+  commandConfig: CommandConfig,
+  context: vscode.ExtensionContext,
+  uri?: vscode.Uri
+) {
+  // Log that a command is about to be executed
+  console.log(`Executing command: ${commandConfig.id}`);
+
+  // Check and log the URI if it's provided, which is crucial for non-built-in commands
+  if (uri) {
+    console.log(`URI received: ${uri.toString()}`);
+  } else {
+    console.log(`No URI received for command: ${commandConfig.id}`);
+  }
+
+  // Your existing logic for handling built-in vs custom commands
+  if (commandConfig.isBuiltIn) {
+    // Existing logic for built-in commands...
+  } else {
+    // Check for the custom command execution
+    if (!uri) {
+      console.warn(
+        `URI not provided for non-built-in command ${commandConfig.id}`
+      );
+      return;
     }
+
+    // Before executing a custom command, log the action
+    console.log(
+      `Executing custom command in terminal: ${commandConfig.id}, with URI: ${uri}`
+    );
+
+    // Your existing logic for executing custom commands in a terminal
+    const clearBeforeExecute = true; // or determined by your logic
+    const contextPath = uri.fsPath;
+    TerminalManager.openTerminal(
+      commandConfig,
+      contextPath,
+      clearBeforeExecute
+    );
+  }
 }
 
 function processArgs(args: string[], context: vscode.ExtensionContext): any[] {
-    return args.map(arg => replacePlaceholders(arg, context));
+  return args.map((arg) => replacePlaceholders(arg, context));
 }
 
-function replacePlaceholders(arg: string, context: any): string {
-    return arg.replace(/\$\{([^}]+)\}/g, (match, path) => {
-        try {
-            const pathParts = path.split('.');
-            let currentValue = context;
-            
-            for (const part of pathParts) {
-                // one line conditional continue statement
-                if (part === 'context') {continue;} 
-                
-                if (currentValue[part] === undefined) {
-                    throw new Error(`Property '${part}' not found.`);
-                }
-                currentValue = currentValue[part];
-            }
-
-            return currentValue;
-        } catch (error) {
-            console.warn(`Could not replace placeholder '${match}': ${error}`);
-            return match; // Return the original placeholder if there's an issue resolving it
+function replacePlaceholders(
+  arg: string,
+  context: vscode.ExtensionContext
+): string {
+  return arg.replace(/\$\{([^}]+)\}/g, (match, path) => {
+    try {
+      const pathParts = path.split(".");
+      let currentValue: any = context;
+      for (const part of pathParts) {
+        if (part === "context") {
+          continue; // Skip the 'context' part, it's just a placeholder in this path
         }
-    });
+        if (currentValue[part] === undefined) {
+          throw new Error(`Property '${part}' not found in context.`);
+        }
+        currentValue = currentValue[part];
+      }
+      console.log(`Placeholder ${match} replaced with ${currentValue}`);
+      return currentValue;
+    } catch (error) {
+      console.error(`Error replacing placeholder '${match}':`, error);
+      return match; // Return the original placeholder if there's an error
+    }
+  });
 }

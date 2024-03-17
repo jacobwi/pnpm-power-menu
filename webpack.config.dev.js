@@ -38,12 +38,11 @@ const extensionConfig = {
           },
         ],
       },
-      // {
-      //   test: /\.ya?ml$/,
-      //   include: path.resolve(__dirname, "./commands.yaml"), // Specify the path to your YAML file
-      //   type: "json", // Use webpack’s internal JSON parser
-      //   use: "yaml-loader",
-      // },
+      {
+        test: /\.ya?ml$/,
+        include: path.resolve(__dirname, "commands.yaml"),
+        use: "yaml-loader",
+      },
     ],
   },
   devtool: "nosources-source-map",
