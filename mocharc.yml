@@ -1,0 +1,16 @@
+# This YAML file is used to configure Mocha test runner options.
+
+# Specifies the file extensions to be considered for running tests.
+extension: ["ts"]
+
+# Requires the ts-node/register module to enable running TypeScript files directly.
+require: ts-node/register
+
+# Specifies the path to the package.json file.
+package: "./package.json"
+
+# Sets the timeout for each test case to 10,001 milliseconds.
+timeout: 10001
+
+# Sets the threshold for considering a test case as slow to 25,000 milliseconds.
+slow: 25000

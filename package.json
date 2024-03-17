@@ -1,0 +1,203 @@
+{
+  "name": "pnpm-power-menu",
+  "displayName": "PNPM Power Menu 🚀",
+  "description": "Customizable PNPM commands for VS Code 🛠️",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=16.0",
+    "vscode": "^1.87.0"
+  },
+  "publisher": "jacobwi",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "pnpm-power-menu.init",
+        "title": "🌱 Initialize Project with PNPM",
+        "category": "PNPM Commands"
+      },
+      {
+        "command": "pnpm-power-menu.install",
+        "title": "📦 Install Dependencies with PNPM",
+        "category": "PNPM Commands"
+      },
+      {
+        "command": "pnpm-power-menu.update",
+        "title": "Update Dependencies",
+        "category": "PNPM Others"
+      },
+      {
+        "command": "pnpm-power-menu.test",
+        "title": "Run Tests",
+        "category": "PNPM Others"
+      },
+      {
+        "command": "pnpm-power-menu.openExtSettings",
+        "title": "Open Extension Settings",
+        "category": "PNPM Others"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "pnpm-power-menu.init",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "pnpm-power-menu.install",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "submenu": "pnpm-power-menu.others",
+          "group": "navigation",
+          "when": "explorerResourceIsFolder",
+          "title": "$(ellipsis) PNPM Others"
+        }
+      ],
+      "pnpm-power-menu.others": [
+        {
+          "command": "pnpm-power-menu.update",
+          "group": "pnpmOthers"
+        },
+        {
+          "command": "pnpm-power-menu.test",
+          "group": "pnpmOthers"
+        },
+        {
+          "command": "pnpm-power-menu.openExtSettings",
+          "title": "$(gear) Extension Settings",
+          "group": "pnpmOthers",
+          "when": "explorerResourceIsFolder"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "pnpm-power-menu.others",
+        "label": "PNPM Others"
+      }
+    ],
+    "configuration": {
+      "title": "PNPM Commands 🛠️",
+      "properties": {
+        "pnpm-power-menu.lazyLoad": {
+          "type": "boolean",
+          "default": true,
+          "order": 0,
+          "description": "🟡 Enables lazy loading for PNPM commands. With this option turned on, commands are registered only when they're first used, potentially improving the startup performance of Visual Studio Code. If you frequently use PNPM commands, consider keeping this enabled for optimal efficiency.",
+          "title": "Enable Lazy Loading"
+        },
+        "pnpm-power-menu.commands.init.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "🟢 Enable the Init command.",
+          "title": "Enable Init Command"
+        },
+        "pnpm-power-menu.commands.init.text": {
+          "type": "string",
+          "default": "pnpm init",
+          "description": "🔧 Command to initialize a new project.",
+          "title": "Init Command Text"
+        },
+        "pnpm-power-menu.commands.init.displayName": {
+          "type": "string",
+          "default": "PNPM: Init",
+          "description": "🏷️ Display name for the Init command.",
+          "title": "Init Command Display Name"
+        },
+        "pnpm-power-menu.commands.install.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "🟢 Enable the Install command.",
+          "title": "Enable Install Command"
+        },
+        "pnpm-power-menu.commands.install.text": {
+          "type": "string",
+          "default": "pnpm install",
+          "description": "🔧 Command to install dependencies.",
+          "title": "Install Command Text"
+        },
+        "pnpm-power-menu.commands.install.displayName": {
+          "type": "string",
+          "default": "PNPM: Install Dependencies",
+          "description": "🏷️ Display name for the Install command.",
+          "title": "Install Command Display Name"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "webpack --mode production --devtool hidden-source-map",
+    "build:watch": "webpack --watch",
+    "pretest": "pnpm run compile:tests && pnpm run compile && pnpm run lint",
+    "test": "pnpm test:vscode",
+    "test:watch": "tsc -p . -w --outDir out",
+    "test:mocha": "mocha out/test/**/*.test.js --delay --ui=bdd",
+    "test:mocha:detailed": "mocha out/test/**/*.test.js --delay --ui=bdd --reporter list",
+    "test:vscode": "vscode-test",
+    "test:vscode:main": "vscode-test --config ./.vscode-test.mjs --label main",
+    "test:vscode:context": "vscode-test --config ./.vscode-test.contextmenu.mjs",
+    "lint": "eslint src --ext ts",
+    "compile:tests": "tsc -p tsconfig.test.json --outDir out",
+    "compile": "tsc -p tsconfig.json",
+    "compile:watch": "tsc -p tsconfig.json -w",
+    "prepublish": "pnpm run lint && pnpm run test && pnpm run build",
+    "prepare": "husky"
+  },
+  "scriptsComments": {
+    "build": "Builds the extension.",
+    "build:watch": "Builds the extension and watches for changes.",
+    "pretest": "Runs the necessary tasks before running tests.",
+    "test": "Runs all tests.",
+    "test:watch": "Watches for changes and runs tests.",
+    "test:mocha": "Runs Mocha tests.",
+    "test:mocha:detailed": "Runs Mocha tests with detailed output.",
+    "test:vscode": "Runs VS Code tests.",
+    "test:vscode:main": "Runs VS Code main tests.",
+    "test:vscode:context": "Runs VS Code context menu tests.",
+    "lint": "Lints the source code.",
+    "compile:tests": "Compiles the tests.",
+    "compile": "Compiles the source code.",
+    "compile:watch": "Watches for changes and compiles the source code.",
+    "prepublish": "Runs the necessary tasks before publishing the extension.",
+    "prepare": "Runs Husky."
+
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.2",
+    "@types/chai": "^4.3.12",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.11.28",
+    "@types/sinon": "^17.0.3",
+    "@types/vscode": "^1.87.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9",
+    "chai": "^5.1.0",
+    "eslint": "^8.57.0",
+    "esm": "^3.2.25",
+    "husky": "^9.0.11",
+    "mocha": "^10.3.0",
+    "semantic-release": "^23.0.4",
+    "sinon": "^17.0.1",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@semantic-release/npm": "^12.0.0",
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.0"
+  }
+}

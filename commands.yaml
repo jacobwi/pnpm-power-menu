@@ -1,0 +1,37 @@
+# This YAML file defines a list of commands for a context menu.
+# Each command has an ID, text, display name, and a flag indicating whether it is built-in or not.
+# The commands include:
+# - "pnpm-power-menu.init": Initializes a project with PNPM.
+# - "pnpm-power-menu.install": Installs dependencies with PNPM.
+# - "pnpm-power-menu.update": Updates dependencies with PNPM.
+# - "pnpm-power-menu.test": Runs tests with PNPM.
+# - "pnpm-power-menu.openExtSettings": Opens the extension settings.
+# The last command has an additional argument specifying the extension ID.
+# The file path for this YAML file is "/c:/Users/jacob/OneDrive/Desktop/Code/context-menu-command/commands-menu/commands.yaml".
+commands:
+  - id: "pnpm-power-menu.init"
+    text: "pnpm init"
+    displayName: "Initialize Project with PNPM"
+    isBuiltIn: false
+
+  - id: "pnpm-power-menu.install"
+    text: "pnpm install"
+    displayName: "Install Dependencies with PNPM"
+    isBuiltIn: false
+
+  - id: "pnpm-power-menu.update"
+    text: "pnpm update"
+    displayName: "Update Dependencies with PNPM"
+    isBuiltIn: false
+
+  - id: "pnpm-power-menu.test"
+    text: "pnpm test"
+    displayName: "Run Tests with PNPM"
+    isBuiltIn: false
+
+  - id: "pnpm-power-menu.openExtSettings"
+    text: "workbench.action.openSettings"
+    displayName: "Open Extension Settings"
+    isBuiltIn: true
+    args:
+      - "@ext:${context.extension.id}"
