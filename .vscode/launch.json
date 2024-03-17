@@ -8,6 +8,14 @@
       "preLaunchTask": "Compile Watch",
       "request": "launch",
       "type": "extensionHost"
+    },
+    {
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "name": "Launch Tests",
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+      "preLaunchTask": "Compile Watch",
+      "request": "launch",
+      "type": "extensionHost"
     }
   ]
 }
