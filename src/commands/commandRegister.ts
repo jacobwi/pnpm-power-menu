@@ -15,6 +15,10 @@ const expectedCommandIds = [
   "pnpm-power-menu.openExtSettings",
 ];
 
+/**
+ * Registers commands from a YAML configuration file.
+ * @param context - The extension context.
+ */
 export async function registerCommandsFromYAML(
   context: vscode.ExtensionContext
 ) {

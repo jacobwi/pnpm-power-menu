@@ -1,12 +1,16 @@
+# Configuration file for semantic-release
+
+# Specify the branches on which semantic-release should be triggered
 branches:
   - main
+
+# Specify the plugins to be used by semantic-release
 plugins:
-  - "@semantic-release/commit-analyzer"
-  - "@semantic-release/release-notes-generator"
-  - "@semantic-release/npm"
-  - "@semantic-release/github"
-  - "@semantic-release/git"
-    with:
-      assets:
-        - "CHANGELOG.md"
-      message: "chore(release): set `package.json` to %%nextRelease.version%% [skip ci]\n\n%%nextRelease.notes%%"
+  - "@semantic-release/commit-analyzer"  # Analyzes commits to determine the next release version
+  - "@semantic-release/release-notes-generator"  # Generates release notes based on commit messages
+  - "@semantic-release/npm"  # Publishes the package to npm registry
+  - "@semantic-release/github"  # Creates a GitHub release
+  - - "@semantic-release/git"  # Commits the updated package.json and CHANGELOG.md files
+    - assets:
+        - "CHANGELOG.md"  # Specify the assets to be committed
+      message: "chore(release): set `package.json` to %%nextRelease.version%% [skip ci]\n\n%%nextRelease.notes%%"  # Specify the commit message template

@@ -1,9 +1,18 @@
 import * as vscode from "vscode";
 import { CommandConfig } from "../types/command-config";
 
+/**
+ * Manages the creation and disposal of terminals in VS Code.
+ */
 export class TerminalManager {
   private static terminals = new Map<string, vscode.Terminal>();
 
+  /**
+   * Opens a terminal with the specified configuration.
+   * @param config - The command configuration for the terminal.
+   * @param contextPath - The path of the context in which the terminal is opened.
+   * @param clearBeforeExecute - Whether to clear the terminal before executing the command. Default is false.
+   */
   static openTerminal(
     config: CommandConfig,
     contextPath: string,
@@ -28,6 +37,11 @@ export class TerminalManager {
 
     terminal.sendText(config.text, true);
   }
+
+  /**
+   * Disposes the terminal with the specified name.
+   * @param name - The name of the terminal to dispose.
+   */
   static disposeTerminal(name: string): void {
     const terminal = this.terminals.get(name);
     if (terminal) {

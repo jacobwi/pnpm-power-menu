@@ -1,6 +1,11 @@
 import * as vscode from "vscode";
 import { registerCommandsFromYAML } from "./commands/commandRegister";
 
+/**
+ * Activates the extension.
+ *
+ * @param context The extension context.
+ */
 export function activate(context: vscode.ExtensionContext) {
   registerCommandsFromYAML(context)
     .then(() => {

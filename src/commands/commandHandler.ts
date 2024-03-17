@@ -2,6 +2,12 @@ import * as vscode from "vscode";
 import { CommandConfig } from "../types/command-config";
 import { TerminalManager } from "../utils/terminalManager";
 
+/**
+ * Handles the execution of a command.
+ * @param commandConfig - The configuration of the command to be executed.
+ * @param context - The extension context.
+ * @param uri - The optional URI parameter, crucial for non-built-in commands.
+ */
 export function handleCommandExecution(
   commandConfig: CommandConfig,
   context: vscode.ExtensionContext,
