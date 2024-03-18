@@ -10,28 +10,36 @@
 # The file path for this YAML file is "/c:/Users/jacob/OneDrive/Desktop/Code/context-menu-command/commands-menu/commands.yaml".
 commands:
   - id: "pnpm-power-menu.init"
-    text: "pnpm init"
+    enabled: true
+    command: "pnpm init"
     displayName: "Initialize Project with PNPM"
     isBuiltIn: false
+    args: []
 
   - id: "pnpm-power-menu.install"
-    text: "pnpm install"
+    enabled: true
+    command: "pnpm install"
     displayName: "Install Dependencies with PNPM"
     isBuiltIn: false
+    args: []
 
   - id: "pnpm-power-menu.update"
-    text: "pnpm update"
+    enabled: true
+    command: "pnpm update"
     displayName: "Update Dependencies with PNPM"
     isBuiltIn: false
+    args: []
 
   - id: "pnpm-power-menu.test"
-    text: "pnpm test"
+    enabled: true
+    command: "pnpm test"
     displayName: "Run Tests with PNPM"
     isBuiltIn: false
+    args: []
 
   - id: "pnpm-power-menu.openExtSettings"
-    text: "workbench.action.openSettings"
+    enabled: true
+    command: "workbench.action.openSettings"
     displayName: "Open Extension Settings"
     isBuiltIn: true
-    args:
-      - "@ext:${context.extension.id}"
+    args: ["@ext:${context.extension.id}"]

@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
-import { CommandConfig } from "../types/command-config";
+import * as vscode from 'vscode';
+import { CommandConfig } from '../types/command-config';
 
 /**
  * Manages the creation and disposal of terminals in VS Code.
@@ -16,7 +16,7 @@ export class TerminalManager {
   static openTerminal(
     config: CommandConfig,
     contextPath: string,
-    clearBeforeExecute: boolean = false
+    clearBeforeExecute: boolean = false,
   ) {
     let terminal = this.terminals.get(config.displayName);
     // Terminal options including the contextPath as the cwd (current working directory)
@@ -31,11 +31,11 @@ export class TerminalManager {
     terminal.show();
 
     if (clearBeforeExecute) {
-      const clearCommand = process.platform === "win32" ? "cls" : "clear";
+      const clearCommand = process.platform === 'win32' ? 'cls' : 'clear';
       terminal.sendText(clearCommand, true);
     }
 
-    terminal.sendText(config.text, true);
+    terminal.sendText(config.command, true);
   }
 
   /**
@@ -52,8 +52,8 @@ export class TerminalManager {
 
   private static clearTerminal(terminal: vscode.Terminal): void {
     // Use the 'clear' command for Unix-based systems or 'cls' for Windows
-    const isWindows = process.platform === "win32";
-    terminal.sendText(isWindows ? "cls" : "clear", true);
+    const isWindows = process.platform === 'win32';
+    terminal.sendText(isWindows ? 'cls' : 'clear', true);
     // Focus back on the terminal after clearing
     terminal.show();
   }

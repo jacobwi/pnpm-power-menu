@@ -16,7 +16,7 @@ export interface CommandConfig {
   /**
    * The text representation of the command.
    */
-  text: string;
+  command: string;
 
   /**
    * The display name of the command.
@@ -31,7 +31,7 @@ export interface CommandConfig {
   /**
    * An array of arguments to be passed to the command.
    */
-  args?: any[];
+  args?: string[];
 }
 
 // Represents the structure of the commands.yaml file

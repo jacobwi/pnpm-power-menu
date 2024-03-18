@@ -7,58 +7,36 @@
     "node": ">=16.0",
     "vscode": "^1.87.0"
   },
+  "icon": "assets/pnpm.png",
   "publisher": "jacobwi",
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  
   "main": "./out/extension.js",
   "scripts": {
-    "prebuild": "echo Running tasks before build...",
-    "build": "webpack --mode production --devtool hidden-source-map",
-    "prebuild:watch": "echo Running tasks before build:watch...",
-    "build:watch": "webpack --watch",
-    "pretest": "pnpm run compile:tests && pnpm run compile && pnpm run lint",
-    "test": "pnpm test:vscode",
-    "pretest:watch": "echo Running tasks before test:watch...",
-    "test:watch": "tsc -p . -w --outDir out",
-    "pretest:mocha": "echo Running tasks before test:mocha...",
-    "test:mocha": "mocha out/test/**/*.test.js --delay --ui=bdd",
-    "pretest:mocha:detailed": "echo Running tasks before test:mocha:detailed...",
-    "test:mocha:detailed": "mocha out/test/**/*.test.js --delay --ui=bdd --reporter list",
-    "pretest:vscode": "echo Running tasks before test:vscode... && pnpm run compile:tests && copyfiles -V commands.yaml out",
-    "test:vscode": "vscode-test",
-    "pretest:vscode:main": "echo Running tasks before test:vscode:main...",
-    "test:vscode:main": "vscode-test --config ./.vscode-test.mjs --label main",
-    "pretest:vscode:context": "echo Running tasks before test:vscode:context...",
-    "test:vscode:context": "vscode-test --config ./.vscode-test.contextmenu.mjs",
-    "prelint": "echo Running tasks before lint...",
-    "lint": "eslint src --ext ts",
-    "precompile:tests": "echo Running tasks before compile:tests... && copyfiles -V commands.yaml out",
-    "compile:tests": "tsc -p tsconfig.test.json --outDir out",
-    "precompile": "echo Running tasks before compile... && copyfiles -V commands.yaml out",
-    "compile": "tsc -p tsconfig.json",
+    "lint": "echo Running tasks before lint... && eslint --ext .js,.ts",
+    "lint:fix": "eslint --ext .js,.ts --fix",
+    "format": "prettier --write 'src/**/*.{ts,tsx,json,yml,md}'",
+    "build": "echo Running tasks before build... && webpack --mode production --devtool hidden-source-map",
+    "build:watch": "echo Running tasks before build:watch... && webpack --watch",
+    "compile": "echo Running tasks before compile... && copyfiles commands.yaml out/commands && tsc -p tsconfig.json",
     "compile:watch": "copyfiles commands.yaml out/commands && tsc -p tsconfig.json -w",
+    "compile:tests": "echo Running tasks before compile:tests... && copyfiles commands.yaml out/commands && tsc -p tsconfig.test.json --outDir out",
+    "test:setup": "pnpm run compile:tests && pnpm run compile && pnpm run lint",
+    "test": "pnpm run test:setup && pnpm test:vscode",
+    "test:watch": "echo Running tasks before test:watch... && tsc -p . -w --outDir out",
+    "test:mocha": "echo Running tasks before test:mocha... && mocha out/test/**/*.test.js --delay --ui=bdd",
+    "test:mocha:detailed": "echo Running tasks before test:mocha:detailed... && mocha out/test/**/*.test.js --delay --ui=bdd --reporter list",
+    "test:vscode": "echo Running tasks before test:vscode... && vscode-test",
+    "test:vscode:main": "echo Running tasks before test:vscode:main... && vscode-test --config ./.vscode-test.mjs --label main",
+    "test:vscode:context": "echo Running tasks before test:vscode:context... && vscode-test --config ./.vscode-test.contextmenu.mjs",
     "prepublish": "pnpm run lint && pnpm run test && pnpm run build",
+    "pack": "echo Running tasks before pack... && vsce package",
     "prepare": "husky"
-  },
-  "scriptsComments": {
-    "build": "Builds the extension.",
-    "build:watch": "Builds the extension and watches for changes.",
-    "pretest": "Runs the necessary tasks before running tests.",
-    "test": "Runs all tests.",
-    "test:watch": "Watches for changes and runs tests.",
-    "test:mocha": "Runs Mocha tests.",
-    "test:mocha:detailed": "Runs Mocha tests with detailed output.",
-    "test:vscode": "Runs VS Code tests.",
-    "test:vscode:main": "Runs VS Code main tests.",
-    "test:vscode:context": "Runs VS Code context menu tests.",
-    "lint": "Lints the source code.",
-    "compile:tests": "Compiles the tests.",
-    "compile": "Compiles the source code.",
-    "compile:watch": "Watches for changes and compiles the source code.",
-    "prepublish": "Runs the necessary tasks before publishing the extension.",
-    "prepare": "Runs Husky."
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
@@ -76,9 +54,12 @@
     "chai": "^5.1.0",
     "copyfiles": "^2.4.1",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "esm": "^3.2.25",
     "husky": "^9.0.11",
     "mocha": "^10.3.0",
+    "prettier": "^3.2.5",
     "semantic-release": "^23.0.4",
     "sinon": "^17.0.1",
     "ts-loader": "^9.5.1",
@@ -107,17 +88,17 @@
       },
       {
         "command": "pnpm-power-menu.update",
-        "title": "Update Dependencies",
+        "title": "🔄 Update Dependencies",
         "category": "PNPM Others"
       },
       {
         "command": "pnpm-power-menu.test",
-        "title": "Run Tests",
+        "title": "🧪 Run Tests",
         "category": "PNPM Others"
       },
       {
         "command": "pnpm-power-menu.openExtSettings",
-        "title": "Open Extension Settings",
+        "title": "⚙️ Open Extension Settings",
         "category": "PNPM Others"
       }
     ],
@@ -166,12 +147,11 @@
     "configuration": {
       "title": "PNPM Commands 🛠️",
       "properties": {
-        "pnpm-power-menu.lazyLoad": {
-          "type": "boolean",
-          "default": true,
-          "order": 0,
-          "description": "🟡 Enables lazy loading for PNPM commands. With this option turned on, commands are registered only when they're first used, potentially improving the startup performance of Visual Studio Code. If you frequently use PNPM commands, consider keeping this enabled for optimal efficiency.",
-          "title": "Enable Lazy Loading"
+        "pnpm-power-menu.loglevel": {
+          "type": "string",
+          "enum": ["Debug", "Info", "Warn", "Error"],
+          "default": "Info",
+          "description": "Controls the level of logging output."
         },
         "pnpm-power-menu.commands.init.enabled": {
           "type": "boolean",

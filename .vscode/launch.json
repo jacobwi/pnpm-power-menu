@@ -10,12 +10,16 @@
       "type": "extensionHost"
     },
     {
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "name": "Launch Tests",
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "Compile Watch",
+      "name": "Extension Tests",
+      "type": "extensionHost",
       "request": "launch",
-      "type": "extensionHost"
+      "runtimeExecutable": "${execPath}",
+      "preLaunchTask": "Compile Watch Test",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+      ],
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"]
     }
   ]
 }

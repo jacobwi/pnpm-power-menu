@@ -1,19 +1,23 @@
-import * as vscode from "vscode";
-import { registerCommandsFromYAML } from "./commands/commandRegister";
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import * as vscode from 'vscode';
+import {
+  initialLoadCommandsConfig,
+  registerDynamicCommands,
+} from './commands/commandsHandler';
+import { logger, getCurrentLogLevel } from './utils/logger';
 /**
  * Activates the extension.
  *
  * @param context The extension context.
  */
-export function activate(context: vscode.ExtensionContext) {
-  registerCommandsFromYAML(context)
-    .then(() => {
-      console.log("Commands registered successfully.");
-    })
-    .catch((error) => {
-      console.error("Failed to register commands:", error);
-    });
+export async function activate(context: vscode.ExtensionContext) {
+  logger.info('Extension activated');
+  logger.info(`Current log level: ${getCurrentLogLevel()}`);
+  const loadedCommands = await initialLoadCommandsConfig();
+
+  registerDynamicCommands(context, loadedCommands);
 }
 
-export function deactivate() {}
+export function deactivate() {
+  logger.info('Extension deactivated');
+}
