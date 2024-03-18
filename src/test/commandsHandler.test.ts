@@ -97,6 +97,13 @@ describe('Command Handlers', () => {
       const mockContext: Partial<vscode.ExtensionContext> = {
         extension: {
           id: 'pnpm-power-menu',
+          extensionUri: vscode.Uri.parse(''),
+          extensionPath: '',
+          isActive: false,
+          packageJSON: {},
+          extensionKind: vscode.ExtensionKind.UI,
+          exports: {},
+          activate: () => Promise.resolve(),
         },
       };
 
