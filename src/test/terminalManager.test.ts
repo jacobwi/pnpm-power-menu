@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as vscode from 'vscode';
-import { TerminalManager } from '../utils/terminalManager';
-import * as sinon from 'sinon';
-import { CommandConfig } from '../types/command-config';
+import * as vscode from "vscode";
+import { TerminalManager } from "../utils/terminalManager";
+import * as sinon from "sinon";
+import { ICommandConfig } from "../interfaces/ICommandConfig";
 
-describe('TerminalManager', () => {
+describe("TerminalManager", () => {
   let sandbox: sinon.SinonSandbox;
   let createTerminalStub: sinon.SinonStub;
   let showStub: sinon.SinonStub;
@@ -15,7 +15,7 @@ describe('TerminalManager', () => {
 
   // Use a `before` hook to dynamically import 'chai'
   before(async () => {
-    const chai = await import('chai');
+    const chai = await import("chai");
     expect = chai.expect;
   });
 
@@ -26,7 +26,7 @@ describe('TerminalManager', () => {
     showStub = sandbox.stub();
     sendTextStub = sandbox.stub();
     disposeStub = sandbox.stub();
-    createTerminalStub = sandbox.stub(vscode.window, 'createTerminal').returns({
+    createTerminalStub = sandbox.stub(vscode.window, "createTerminal").returns({
       show: showStub,
       sendText: sendTextStub,
       dispose: disposeStub,
@@ -39,26 +39,26 @@ describe('TerminalManager', () => {
   afterEach(() => {
     sandbox.restore();
   });
-  it('should create a new terminal if it does not exist', () => {
-    const terminalName = 'testTerminal';
-    const command = 'echo Hello World';
-    const contextPath = '/some/path';
+  it("should create a new terminal if it does not exist", () => {
+    const terminalName = "testTerminal";
+    const command = "echo Hello World";
+    const contextPath = "/some/path";
 
     TerminalManager.openTerminal(
-      { displayName: terminalName, command: command } as CommandConfig,
+      { displayName: terminalName, command: command } as ICommandConfig,
       contextPath,
-      true,
+      true
     );
 
     sinon.assert.calledOnceWithExactly(
       createTerminalStub,
-      sinon.match({ name: terminalName, cwd: contextPath }),
+      sinon.match({ name: terminalName, cwd: contextPath })
     );
 
     const terminalInstance = createTerminalStub.returnValues[0];
     sinon.assert.calledWith(
       terminalInstance.sendText,
-      process.platform === 'win32' ? 'cls' : 'clear',
+      process.platform === "win32" ? "cls" : "clear"
     );
     sinon.assert.calledWith(terminalInstance.sendText, command);
   });
@@ -109,20 +109,20 @@ describe('TerminalManager', () => {
   //     )
   //   ).to.be.true; // Verify the second call was with the second command
   // });
-  it('should reuse an existing terminal if one already exists with the same name', () => {
-    const commandConfig1: CommandConfig = {
-      displayName: 'testTerminal',
-      command: 'echo First Command',
+  it("should reuse an existing terminal if one already exists with the same name", () => {
+    const commandConfig1: ICommandConfig = {
+      displayName: "testTerminal",
+      command: "echo First Command",
       enabled: true,
-      id: 'test',
+      id: "test",
     };
-    const commandConfig2: CommandConfig = {
-      displayName: 'testTerminal',
-      command: 'echo Second Command',
+    const commandConfig2: ICommandConfig = {
+      displayName: "testTerminal",
+      command: "echo Second Command",
       enabled: true,
-      id: 'test',
+      id: "test",
     };
-    const shellPath = '/bin/bash';
+    const shellPath = "/bin/bash";
 
     TerminalManager.openTerminal(commandConfig1, shellPath, true);
     // After the first command, retrieve the stub for sendText from the first terminal created
@@ -139,46 +139,46 @@ describe('TerminalManager', () => {
     expect(
       firstTerminalSendTextStub
         .getCall(1)
-        .calledWithExactly(commandConfig1.command, true),
+        .calledWithExactly(commandConfig1.command, true)
     ).to.be.true; // First command
     expect(
       firstTerminalSendTextStub
         .getCall(3)
-        .calledWithExactly(commandConfig2.command, true),
+        .calledWithExactly(commandConfig2.command, true)
     ).to.be.true; // Second command
   });
-  it('should clear the terminal before executing a command when clearBeforeExecute is true', () => {
-    const commandConfig: CommandConfig = {
-      displayName: 'testTerminal',
-      command: 'echo Clear Me',
-      id: 'test',
+  it("should clear the terminal before executing a command when clearBeforeExecute is true", () => {
+    const commandConfig: ICommandConfig = {
+      displayName: "testTerminal",
+      command: "echo Clear Me",
+      id: "test",
       enabled: true,
     };
-    const shellPath = '/bin/bash';
+    const shellPath = "/bin/bash";
 
     TerminalManager.openTerminal(commandConfig, shellPath, true);
 
     // Logging the arguments of the stub calls for debugging
     // Debugging: Log the arguments of the stub calls
     if (sendTextStub.getCall(0)) {
-      console.log('First call args:', sendTextStub.getCall(0).args[0]);
+      console.log("First call args:", sendTextStub.getCall(0).args[0]);
     } else {
-      console.log('sendTextStub was not called the first time');
+      console.log("sendTextStub was not called the first time");
     }
 
     if (sendTextStub.getCall(1)) {
-      console.log('Second call args:', sendTextStub.getCall(1).args[0]);
+      console.log("Second call args:", sendTextStub.getCall(1).args[0]);
     } else {
-      console.log('sendTextStub was not called the second time');
+      console.log("sendTextStub was not called the second time");
     }
     // Your existing assertions
     expect(
       sendTextStub.firstCall.calledWith(
-        sinon.match(process.platform === 'win32' ? 'cls' : 'clear'),
-      ),
+        sinon.match(process.platform === "win32" ? "cls" : "clear")
+      )
     ).to.be.true;
     expect(
-      sendTextStub.secondCall.calledWithExactly(commandConfig.command, true),
+      sendTextStub.secondCall.calledWithExactly(commandConfig.command, true)
     ).to.be.true;
   });
 });

@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out",
+    "outDir": "./test-out",
     "module": "Node16",
   },
   "include": ["src/test/**/*"],

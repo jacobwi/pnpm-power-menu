@@ -6,8 +6,11 @@
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jacobwi/pnpm-power-menu?style=for-the-badge&logo=github">
 
 </p>
+<p align="center">
+  <img src="src/assets/moka-pnpm.png" alt="Meow" width="128"/>
+</p>
 
-> Customizable PNPM commands for VS Code 🛠️
+> **Customizable PNPM commands for VS Code 🛠️**
 
 ## Prerequisites
 
@@ -17,6 +20,7 @@
 ## Install
 
 For local development:
+
 ```sh
 pnpm i
 ```
@@ -36,34 +40,33 @@ This section outlines the commands available in the PNPM Power Menu, defined in 
 ### Commands Overview
 
 - 🌱 **Initialize Project with PNPM**
+
   - **ID:** `pnpm-power-menu.init`
   - **Command:** `pnpm init`
   - **Description:** Initializes a new project using PNPM, setting up the necessary package management files.
-
 - 📦 **Install Dependencies with PNPM**
+
   - **ID:** `pnpm-power-menu.install`
   - **Command:** `pnpm install`
   - **Description:** Installs all dependencies listed in your project's `package.json` file using PNPM.
-
 - ⬆️ **Update Dependencies with PNPM**
+
   - **ID:** `pnpm-power-menu.update`
   - **Command:** `pnpm update`
   - **Description:** Updates your project's dependencies to their latest versions according to the version ranges specified in the `package.json`.
-
 - 🧪 **Run Tests with PNPM**
+
   - **ID:** `pnpm-power-menu.test`
   - **Command:** `pnpm test`
   - **Description:** Executes the test scripts defined in your project, facilitating quick and easy testing.
-
 - ⚙️ **Open Extension Settings**
+
   - **ID:** `pnpm-power-menu.openExtSettings`
   - **Command:** `workbench.action.openSettings`
   - **Description:** Opens the settings pane within VS Code, allowing you to configure the PNPM Power Menu extension. This command is built into VS Code but is conveniently accessible through the PNPM Power Menu.
   - **Additional Argument:** `@ext:${context.extension.id}` specifies the extension ID for which the settings should be opened.
 
 These commands are designed to streamline your development workflow by integrating common PNPM tasks directly into your editor's context menu.
-
-
 
 ## Author
 
@@ -75,4 +78,3 @@ These commands are designed to streamline your development workflow by integrati
 ## Show your support
 
 Give a ⭐️ if this project helped you!
-

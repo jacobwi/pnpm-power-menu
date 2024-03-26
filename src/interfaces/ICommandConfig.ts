@@ -2,7 +2,7 @@
 /**
  * Represents the configuration for a command.
  */
-export interface CommandConfig {
+export interface ICommandConfig {
   /**
    * The unique identifier for the command.
    */
@@ -36,5 +36,5 @@ export interface CommandConfig {
 
 // Represents the structure of the commands.yaml file
 export interface CommandsConfig {
-  commands: CommandConfig[];
+  commands: ICommandConfig[];
 }

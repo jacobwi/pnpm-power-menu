@@ -5,7 +5,9 @@
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
       "name": "Launch Extension",
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "Compile Watch",
+      "preLaunchTask": "Run Build Watch",
+
+      // "preLaunchTask": "Run Build Watch",
       "request": "launch",
       "type": "extensionHost"
     },
